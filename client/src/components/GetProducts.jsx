@@ -36,6 +36,12 @@ const GetProducts = () => {
         >
           Add New Products
         </a>
+        <a
+          href="/filtered"
+          className="rounded bg-green-800 py-1 px-3 text-md mx-2 text-white"
+        >
+          Filter Products
+        </a>
       </div>
       <div className="container mx-auto ">
         <table className="border-collapse w-full">

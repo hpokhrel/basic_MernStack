@@ -6,6 +6,7 @@ import UpdateProducts from "./components/UpdateProducts.jsx";
 import Register from "./components/Register.jsx";
 import Login from "./components/Login.jsx";
 import ProtectedRoute from "./components/protectedRoute.jsx";
+import FilteredProducts from "./components/FilteredProducts.jsx";
 
 function App() {
   const route = createBrowserRouter([
@@ -40,6 +41,14 @@ function App() {
     {
       path: "/",
       element: <Login />,
+    },
+    {
+      path: "/filtered",
+      element: (
+        <ProtectedRoute>
+          <FilteredProducts />
+        </ProtectedRoute>
+      ),
     },
   ]);
 

@@ -27,7 +27,6 @@ export const getProducts = async (req, res) => {
   }
 };
 
-// getproductsbyId
 export const getProductsById = async (req, res) => {
   const product = await Products.findById(req.params.id);
   if (!product) {
@@ -54,8 +53,6 @@ export const updateProducts = async (req, res) => {
     .json({ message: `${updatedProduct.name} updated successfully` });
 };
 
-
-
 export const deleteProducts = async (req, res) => {
   const product = await Products.findById(req.params.id);
   if (!product) {
@@ -67,4 +64,17 @@ export const deleteProducts = async (req, res) => {
   return res
     .status(200)
     .json({ message: `${product.name} deleted successfully` });
-}
+};
+
+export const getFilteredProducts = async (req, res) => {
+  const { minPrice } = req.query;
+  try {
+    const products = await Products.find({
+      stock: { $gt: 0 },
+      price: { $gt: minPrice },
+    });
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ message: "Error fetching filtered products" });
+  }
+};
