@@ -8,6 +8,10 @@ import {
   getProductsById,
 } from "../controllers/Products.js";
 
+// import verifyUser from "../middlewares/verifyUser.js";
+
+// productRoute.use(verifyUser);
+
 productRoute.post("/postproducts", postProducts);
 productRoute.get("/getproducts", getProducts);
 productRoute.patch("/updateProducts/:id", updateProducts);

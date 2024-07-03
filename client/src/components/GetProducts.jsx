@@ -4,7 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 
 const GetProducts = () => {
   const [products, setProducts] = useState([]);
-
+  axios.defaults.withCredentials = true;
   useEffect(() => {
     const getProcucts = async () => {
       await axios

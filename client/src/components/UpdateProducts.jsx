@@ -38,7 +38,7 @@ const UpdateProducts = () => {
       );
       console.log("Response data:", res.data);
       toast.success(res.data.message);
-      navigate("/");
+      navigate("/home");
     } catch (error) {
       console.error(error);
       toast.error("Failed to Update Product");

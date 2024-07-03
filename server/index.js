@@ -4,6 +4,8 @@ import mongoose from "mongoose";
 import cors from "cors";
 import bodyParser from "body-parser";
 import productRoute from "./routes/Products.js";
+import userRoute from "./routes/UserRoute.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -16,8 +18,10 @@ app.get("/", (req, res) => {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
+app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
+app.use(cookieParser());
 app.use("/api", productRoute);
+app.use("/user", userRoute);
 
 mongoose
   .connect(process.env.MONGODB_URL)
