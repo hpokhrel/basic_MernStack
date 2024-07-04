@@ -1,185 +1,28 @@
-// import React, { useState, useEffect } from "react";
-// import axios from "axios";
-// import toast, { Toaster } from "react-hot-toast";
-
-// const GetProducts = () => {
-//   const [products, setProducts] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   axios.defaults.withCredentials = true;
-
-//   useEffect(() => {
-//     const getProducts = async () => {
-//       try {
-//         const response = await axios.get(
-//           "http://localhost:4321/api/getproducts"
-//         );
-//         setProducts(response.data);
-//       } catch (error) {
-//         console.error("Error fetching products:", error);
-//         setError("Failed to load products. Please try again later.");
-//       } finally {
-//         setLoading(false);
-//       }
-//     };
-//     getProducts();
-//   }, []);
-
-//   const deleteProduct = async (id) => {
-//     try {
-//       const response = await axios.delete(
-//         `http://localhost:4321/api/deleteproducts/${id}`
-//       );
-//       setProducts((prevProducts) =>
-//         prevProducts.filter((product) => product._id !== id)
-//       );
-//       toast.success(response.data.message);
-//     } catch (error) {
-//       console.error("Error deleting product:", error);
-//       toast.error("Failed to delete product. Please try again later.");
-//     }
-//   };
-
-//   if (loading) {
-//     return <div className="text-center mt-5">Loading...</div>;
-//   }
-
-//   if (error) {
-//     return <div className="text-center mt-5 text-red-500">{error}</div>;
-//   }
-
-//   return (
-//     <>
-//       <div className="container m-5 flex justify-end w-full">
-//         <a
-//           href="/post"
-//           className="rounded bg-green-800 py-1 px-3 text-md mx-2 text-white"
-//         >
-//           Add New Products
-//         </a>
-//         <a
-//           href="/filtered"
-//           className="rounded bg-green-800 py-1 px-3 text-md mx-2 text-white"
-//         >
-//           Filter Products
-//         </a>
-//       </div>
-//       <div className="container mx-auto ">
-//         <table className="border-collapse w-full">
-//           <thead>
-//             <tr>
-//               <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-//                 S.No
-//               </th>
-//               <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-//                 Product Name
-//               </th>
-//               <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-//                 Description
-//               </th>
-//               <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-//                 Price
-//               </th>
-//               <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-//                 Stock
-//               </th>
-//               <th className="p-3 font-bold uppercase bg-gray-200 text-gray-600 border border-gray-300 hidden lg:table-cell">
-//                 Actions
-//               </th>
-//             </tr>
-//           </thead>
-//           <tbody>
-//             {products.map((product, index) => (
-//               <tr
-//                 key={product._id}
-//                 className="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0"
-//               >
-//                 <td className="w-full lg:w-auto text-center p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
-//                   {index + 1}
-//                 </td>
-//                 <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
-//                   {product.name}
-//                 </td>
-//                 <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
-//                   {product.description}
-//                 </td>
-//                 <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
-//                   ${product.price}
-//                 </td>
-//                 <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
-//                   {product.stock}
-//                 </td>
-//                 <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
-//                   <a
-//                     href={`/update/${product._id}`}
-//                     className="rounded bg-blue-400 py-1 px-3 text-md mx-2 text-white"
-//                   >
-//                     Update
-//                   </a>
-//                   <button
-//                     onClick={() => deleteProduct(product._id)}
-//                     className="rounded bg-red-400 py-1 px-3 text-md mx-2 text-white"
-//                   >
-//                     Delete
-//                   </button>
-//                 </td>
-//               </tr>
-//             ))}
-//           </tbody>
-//         </table>
-//       </div>
-//       <Toaster position="bottom-right" />
-//     </>
-//   );
-// };
-
-// export default GetProducts;
-
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 import toast, { Toaster } from "react-hot-toast";
+import {
+  fetchProducts,
+  deleteProductAction,
+} from "../features/products/productSlice.js";
+import { useDispatch, useSelector } from "react-redux";
 
 const GetProducts = () => {
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  axios.defaults.withCredentials = true;
+  const dispatch = useDispatch();
+  const products = useSelector((state) => state.products);
+  const loading = useSelector((state) => state.loading);
+  const error = useSelector((state) => state.error);
 
   useEffect(() => {
-    console.log("useEffect triggered");
-    const getProducts = async () => {
-      try {
-        console.log("Fetching products...");
-        const response = await axios.get(
-          "http://localhost:4321/api/getproducts"
-        );
-        console.log("Products fetched:", response.data);
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setError("Failed to load products. Please try again later.");
-      } finally {
-        setLoading(false);
-        console.log("Loading finished");
-      }
-    };
-    getProducts();
-  }, []);
+    dispatch(fetchProducts());
+  }, [dispatch]);
 
   const deleteProduct = async (id) => {
-    console.log("Deleting product with ID:", id);
     try {
-      const response = await axios.delete(
-        `http://localhost:4321/api/deleteproducts/${id}`
-      );
-      console.log("Product deleted:", response.data.message);
-      setProducts((prevProducts) =>
-        prevProducts.filter((product) => product._id !== id)
-      );
-      toast.success(response.data.message);
+      await dispatch(deleteProductAction(id)).unwrap();
+      toast.success("Product deleted successfully");
     } catch (error) {
       console.error("Error deleting product:", error);
-      toast.error("Failed to delete product. Please try again later.");
+      toast.error("Failed to delete product");
     }
   };
 
@@ -232,42 +75,43 @@ const GetProducts = () => {
             </tr>
           </thead>
           <tbody>
-            {products.map((product, index) => (
-              <tr
-                key={product._id}
-                className="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0"
-              >
-                <td className="w-full lg:w-auto text-center p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
-                  {index + 1}
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
-                  {product.name}
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
-                  {product.description}
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
-                  ${product.price}
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
-                  {product.stock}
-                </td>
-                <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
-                  <a
-                    href={`/update/${product._id}`}
-                    className="rounded bg-blue-400 py-1 px-3 text-md mx-2 text-white"
-                  >
-                    Update
-                  </a>
-                  <button
-                    onClick={() => deleteProduct(product._id)}
-                    className="rounded bg-red-400 py-1 px-3 text-md mx-2 text-white"
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {products.map &&
+              products.map((product, index) => (
+                <tr
+                  key={`${product.name}-${product.price}`}
+                  className="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0"
+                >
+                  <td className="w-full lg:w-auto text-center p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
+                    {index + 1}
+                  </td>
+                  <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
+                    {product.name}
+                  </td>
+                  <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
+                    {product.description}
+                  </td>
+                  <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
+                    ${product.price}
+                  </td>
+                  <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
+                    {product.stock}
+                  </td>
+                  <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
+                    <a
+                      href={`/update/${product._id}`}
+                      className="rounded bg-blue-400 py-1 px-3 text-md mx-2 text-white"
+                    >
+                      Update
+                    </a>
+                    <button
+                      onClick={() => deleteProduct(product._id)}
+                      className="rounded bg-red-400 py-1 px-3 text-md mx-2 text-white"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
           </tbody>
         </table>
       </div>

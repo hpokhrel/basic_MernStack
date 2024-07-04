@@ -1,30 +1,28 @@
 import React, { useState } from "react";
-import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../features/auth/authSlice";
 
 const Login = () => {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  axios.defaults.withCredentials = true;
+
+  const { loading } = useSelector((state) => state.auth);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:4321/user/login", {
-        email,
-        password,
-      });
-      console.log("Response data:", res.data);
-      toast.success(res.data.message);
+      await dispatch(login({ email, password })).unwrap();
+      toast.success("Logged in successfully");
       navigate("/home");
     } catch (error) {
-      console.error(error);
       toast.error("Username or Password is incorrect");
     }
   };
+
   return (
     <>
       <div className="flex min-h-screen items-center justify-center">
@@ -66,14 +64,15 @@ const Login = () => {
               className="mt-6 block w-full select-none rounded-full bg-green-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-800/20 transition-all hover:shadow-lg hover:shadow-green-800/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               type="submit"
               data-ripple-light="true"
+              disabled={loading}
             >
-              Login
+              {loading ? "Logging in..." : "Login"}
             </button>
             <div className="mt-4">
               New user? &nbsp;
-              <a className="text-green-800" href="/register">
+              <Link className="text-green-800" to="/register">
                 Click Here To Register
-              </a>
+              </Link>
             </div>
           </form>
         </div>

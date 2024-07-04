@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import toast, { Toaster } from "react-hot-toast";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addProduct } from "../features/products/productSlice.js";
 
 const PostProducts = () => {
   const [product, setProducts] = useState({
@@ -10,20 +11,20 @@ const PostProducts = () => {
     price: "",
     stock: "",
   });
+
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const inputHandler = (e) => {
     const { name, value } = e.target;
     setProducts((prevProduct) => ({ ...prevProduct, [name]: value }));
   };
+
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post(
-        "http://localhost:4321/api/postproducts",
-        product
-      );
-      console.log("Response data:", res.data);
-      toast.success(res.data.message);
+      await dispatch(addProduct(product)).unwrap();
+      toast.success("Product added successfully");
       navigate("/home");
     } catch (error) {
       console.error(error);

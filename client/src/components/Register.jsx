@@ -1,30 +1,30 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+import { register } from "../features/auth/authSlice";
 
 const Register = () => {
-  const [name, setName] = useState();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const { isLoading } = useSelector((state) => state.auth);
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post("http://localhost:4321/user/register", {
-        name,
-        email,
-        password,
+    dispatch(register({ name, email, password }))
+      .unwrap()
+      .then((res) => {
+        toast.success(res.message);
+        navigate("/");
+      })
+      .catch((err) => {
+        toast.error("Failed to Register");
       });
-      console.log("Response data:", res.data);
-      toast.success(res.data.message);
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-      toast.error("Failed to Register");
-    }
   };
 
   return (
@@ -79,8 +79,9 @@ const Register = () => {
               className="mt-6 block w-full select-none rounded-full bg-green-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-800/20 transition-all hover:shadow-lg hover:shadow-green-800/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               type="submit"
               data-ripple-light="true"
+              disabled={isLoading}
             >
-              Register User
+              {isLoading ? "Registering..." : "Register User"}
             </button>
             <div className="mt-4">
               Already Have an Account? &nbsp;
