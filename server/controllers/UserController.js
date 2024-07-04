@@ -1,7 +1,6 @@
 import UserModel from "../models/UserModel.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import cookieParser from "cookie-parser";
 
 
 export const createUser = async (req, res) => {
