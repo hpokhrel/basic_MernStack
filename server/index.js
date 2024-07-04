@@ -28,4 +28,8 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((error) => console.log(error.message));
 
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+const server = app.listen(PORT, () =>
+  console.log(`Server running on port ${PORT}`)
+);
+
+export default { server, app };

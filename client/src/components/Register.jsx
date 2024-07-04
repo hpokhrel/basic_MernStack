@@ -23,7 +23,8 @@ const Register = () => {
         navigate("/");
       })
       .catch((err) => {
-        toast.error("Failed to Register");
+        toast.error(`${email} has been already registered`);
+        console.log(err);
       });
   };
 
