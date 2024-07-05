@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,6 +11,14 @@ const Login = () => {
   const navigate = useNavigate();
 
   const { loading } = useSelector((state) => state.auth);
+
+  const handleLogin = () => {
+    const credentials = {
+      email,
+      password,
+    };
+    dispatch(login(credentials));
+  };
 
   const onSubmitHandler = async (e) => {
     e.preventDefault();
@@ -70,9 +78,10 @@ const Login = () => {
                 </label>
               </div>
             </div>
-            <button id="loginBtn"
+            <button
+              id="loginBtn"
               data-testid="loginBtn"
-              className="mt-6 block w-full select-none rounded-full bg-green-800 py-3 px-6 text-center align-middle font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-800/20 transition-all hover:shadow-lg hover:shadow-green-800/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+              className="mt-6 block w-full select-none rounded-full bg-green-800 py-3 px-6 text-center align-middle  uppercase text-white shadow-md shadow-green-800/20 transition-all hover:shadow-lg hover:shadow-green-800/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
               type="submit"
               data-ripple-light="true"
               disabled={loading}

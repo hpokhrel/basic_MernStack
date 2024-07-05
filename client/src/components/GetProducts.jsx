@@ -5,6 +5,7 @@ import {
   deleteProductAction,
 } from "../features/products/productSlice.js";
 import { useDispatch, useSelector } from "react-redux";
+import { login } from "../features/auth/authSlice.js";
 
 const GetProducts = () => {
   const dispatch = useDispatch();
@@ -36,16 +37,16 @@ const GetProducts = () => {
 
   return (
     <>
-      <div className="container m-5 flex justify-end w-full">
+      <div className="container m-5 flex justify-end w-full gap-5">
         <a
           href="/post"
-          className="rounded bg-green-800 py-1 px-3 text-md mx-2 text-white"
+          className="my-5 border-green-900 border px-4 py-2 rounded-full bg-green-800 text-white"
         >
-          Add New Products
+          Add Products
         </a>
         <a
           href="/filtered"
-          className="rounded bg-green-800 py-1 px-3 text-md mx-2 text-white"
+          className="my-5 border-green-900 border px-4 py-2 rounded-full bg-green-800 text-white"
         >
           Filter Products
         </a>
@@ -78,7 +79,7 @@ const GetProducts = () => {
             {products.map &&
               products.map((product, index) => (
                 <tr
-                  key={`${product.name}-${product.price}`}
+                  key={product._id}
                   className="bg-white lg:hover:bg-gray-100 flex lg:table-row flex-row lg:flex-row flex-wrap lg:flex-no-wrap mb-10 lg:mb-0"
                 >
                   <td className="w-full lg:w-auto text-center p-3 text-gray-800 border border-b block lg:table-cell relative lg:static">
@@ -99,13 +100,13 @@ const GetProducts = () => {
                   <td className="w-full lg:w-auto p-3 text-gray-800 border border-b text-center block lg:table-cell relative lg:static">
                     <a
                       href={`/update/${product._id}`}
-                      className="rounded bg-blue-400 py-1 px-3 text-md mx-2 text-white"
+                      className="rounded-full bg-blue-400 py-1 px-3 text-md mx-2 text-white"
                     >
                       Update
                     </a>
                     <button
                       onClick={() => deleteProduct(product._id)}
-                      className="rounded bg-red-400 py-1 px-3 text-md mx-2 text-white"
+                      className="rounded-full bg-red-400 py-1 px-3 text-md mx-2 text-white"
                     >
                       Delete
                     </button>

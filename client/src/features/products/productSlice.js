@@ -42,8 +42,10 @@ export const deleteProductAction = createAsyncThunk(
 export const getProductById = createAsyncThunk(
   "products/getProductById",
   async (id) => {
-    await axios.get(`http://localhost:4321/api/getproducts/${id}`);
-    return id;
+    const response = await axios.get(
+      `http://localhost:4321/api/getproducts/${id}`
+    );
+    return response.data;
   }
 );
 
@@ -72,59 +74,41 @@ const productSlice = createSlice({
       .addCase(fetchProducts.fulfilled, (state, action) => {
         return action.payload;
       })
-      .addCase(fetchProducts.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(fetchProducts.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
+
       .addCase(addProduct.fulfilled, (state, action) => {
         state.loading = false;
         state.products.push(action.payload);
       })
 
-      .addCase(addProduct.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
-      })
-
       .addCase(updateProduct.fulfilled, (state, action) => {
         state.loading = false;
-        // state.products = state.products.map((product) => {
-        //   if (product._id === action.payload._id) {
-        //     return action.payload;
-        //   }
-        //   return product;
-        // });
-        return action.payload;
-      })
 
-      .addCase(updateProduct.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
+        if (Array.isArray(state.products)) {
+          state.products = state.products.map((product) => {
+            if (product._id === action.payload._id) {
+              return action.payload;
+            }
+            return product;
+          });
+        } else {
+          console.error("state.products is not an array:", state.products);
+          state.products = [action.payload];
+        }
       })
 
       .addCase(deleteProductAction.fulfilled, (state, action) => {
         return state.filter((product) => product._id !== action.payload);
       })
       .addCase(getProductById.fulfilled, (state, action) => {
-        state.products = action.payload;
+        state.selectedProduct = action.payload;
       })
-      .addCase(getFilteredProducts.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
+
       .addCase(getFilteredProducts.fulfilled, (state, action) => {
         state.loading = false;
         state.filteredProducts = action.payload;
-      })
-      .addCase(getFilteredProducts.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.error.message;
       });
   },
 });
 
+export const { actions, reducer } = productSlice;
 export default productSlice.reducer;

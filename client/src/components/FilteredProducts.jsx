@@ -39,9 +39,10 @@ const FilteredProducts = () => {
   }
   return (
     <div className="max-w-md mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Filtered Products</h1>
-
-      <div className="relative h-11 w-full min-w-[200px] mb-5">
+      <button className="my-5 border-green-900 border px-3 py-2 rounded-full bg-green-800 text-white">
+        <a href="/home">Go Back</a>
+      </button>
+      <div className="relative h-11 mt-4 w-full min-w-[200px] mb-5">
         <input
           type="number"
           value={minPrice}
@@ -54,6 +55,9 @@ const FilteredProducts = () => {
           Minimum Price
         </label>
       </div>
+      <h2 className="text-xl text-green-800 mb-4">
+        Filtered Products with Minimum Price of <strong>${minPrice}</strong>
+      </h2>
       {filteredProducts.length > 0 ? (
         <div className="container mx-auto ">
           <table className="border-collapse w-full">
