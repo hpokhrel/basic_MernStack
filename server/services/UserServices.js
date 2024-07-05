@@ -42,6 +42,11 @@ export const SignInUser = async (req, res) => {
   });
 };
 
+export const SignOutUser = async (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logged out successfully" });
+};
+
 export const getAllUsers = async (req, res) => {
   const users = await UserModel.find();
   res.status(200).json(users);

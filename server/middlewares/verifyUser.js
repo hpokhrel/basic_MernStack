@@ -1,26 +1,27 @@
 import jwt from "jsonwebtoken";
-import mongoose from "mongoose";
-const UserModel = mongoose.model("User");
+import UserModel from "../models/UserModel.js";
 
 const verifyUser = async (req, res, next) => {
   const token = req.cookies.token;
   if (!token) {
-    res.status(401).json({ message: "Unauthorized" });
-    return;
+    return res.status(401).json({ message: "Unauthorized" });
   }
-  jwt.verify(token, process.env.JWT_SECRET, async (err, user) => {
-    if (err) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const user = await UserModel.findOne({ _id: decoded.userId });
+
+    if (!user) {
+      return res.status(401).json({ message: "Unauthorized" });
     }
-    const userExists = await UserModel.findOne({ _id: user.id });
-    if (!userExists) {
-      res.status(401).json({ message: "Unauthorized" });
-      return;
-    }
+
+    // Attach user information to the request object for further use if needed
     req.user = user;
     next();
-  });
+  } catch (err) {
+    console.error("Token verification failed:", err);
+    return res.status(401).json({ message: "Unauthorized" });
+  }
 };
 
 export default verifyUser;

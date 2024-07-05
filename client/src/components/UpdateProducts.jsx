@@ -34,7 +34,6 @@ const UpdateProducts = () => {
 
   useEffect(() => {
     if (selectedProduct) {
-      console.log("Selected Product: ", selectedProduct);
       setProduct({
         name: selectedProduct.name || "",
         description: selectedProduct.description || "",
@@ -43,8 +42,6 @@ const UpdateProducts = () => {
       });
     }
   }, [selectedProduct]);
-
-  console.log("Hello " + selectedProduct);
 
   const inputHandler = (e) => {
     const { name, value } = e.target;

@@ -5,13 +5,17 @@ import {
   deleteProductAction,
 } from "../features/products/productSlice.js";
 import { useDispatch, useSelector } from "react-redux";
-import { login } from "../features/auth/authSlice.js";
+import { logout } from "../features/auth/authSlice.js";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
 
 const GetProducts = () => {
   const dispatch = useDispatch();
   const products = useSelector((state) => state.products);
   const loading = useSelector((state) => state.loading);
   const error = useSelector((state) => state.error);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(fetchProducts());
@@ -35,6 +39,15 @@ const GetProducts = () => {
     return <div className="text-center mt-5 text-red-500">{error}</div>;
   }
 
+  const handleLogout = () => {
+    const allCookies = Cookies.get();
+    for (let cookie in allCookies) {
+      Cookies.remove(cookie);
+    }
+    dispatch(logout());
+    navigate("/");
+  };
+
   return (
     <>
       <div className="container m-5 flex justify-end w-full gap-5">
@@ -50,6 +63,12 @@ const GetProducts = () => {
         >
           Filter Products
         </a>
+        <button
+          onClick={handleLogout}
+          className="my-5 px-4 py-2 rounded-full bg-red-400 text-white"
+        >
+          Logout
+        </button>
       </div>
       <div className="container mx-auto ">
         <table className="border-collapse w-full">
