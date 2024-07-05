@@ -1,3 +1,5 @@
+````bash
+
 # Project: Basics of MERN Stack including (CRUD, Authentication, Authorization, Cookies, Queries, etc)
 
 ### Prerequisites
@@ -7,26 +9,34 @@
 - MongoDB (Cloud Setup)
 - Vs Code Editor
 
-### Installation and Guide to start Project
+### Installation and Guide to Start Project
+
+```bash
+Step 1: npm install
+Step 2: Create a `.env` file inside the root folder of the server and enter your own values:
+
+        ```
+        PORT=`YourPortNumber`
+        MONGODB_URL=`mongodb+srv://dB1:<yourPassword>@<yourAppName>.wxsnpxt.mongodb.net/?retryWrites=true&w=majority&appName=<yourAppName>`
+        JWT_SECRET=`AnySecretThatWontBeKnownToAnyone`
+        ```
+
+        Replace `<yourPassword>` and `<yourAppName>` with your actual MongoDB credentials.
+
+Step 3: In the terminal, navigate to the server folder (`<rootDir>/server/`) and run `npm run dev`.
+
+Step 4: In a new terminal, navigate to the client folder (`<rootDir>/client/`) and run `npm run dev`.
+
+
+
+
 
 ```bash
 
-step 1 : npm install
-step 2 : create .env file inside root folder of server and enter your own value: (for eg.)
+#Testing Using Jest and Super Test
 
-        PORT= Give your own port (eg: 4321)
-        MONGODB_URL = "mongodb+srv://dB1:<yourPassword>@<yourAppName>.wxsnpxt.mongodb.net/?retryWrites=true&w=majority&appName=<yourAppName>"
-                      <!-- Replace <yourPassword> and <yourAppName> with the password and Database name -->
-        JWT_SECRET = "Any Secret that wont be known to anyone, prefer a strong one (eg: BJKHSHKLCKLSJKLCJSCKLHSKLCH......)"
-
-step 3 : In terminal go to server folder (eg: <rootDir>/server/ --> npm run dev);
-
-step 4 : In next new terminal go to client folder (eg: <rootDir>/client/ --> npm run dev);
-
-### For Testing:
-
-step 1 : In next new terminal go to client folder (eg: <rootDir>/client/ --> npm test);
-step 2 : In next new terminal go to server folder (eg: <rootDir>/server/ --> npm test);
+step 1 : In next new terminal go to client folder (`<rootDir>/client/`) and run `npm test`;
+step 2 : In next new terminal go to server folder (`<rootDir>/server/`) and run `npm test`;
 
 # Server Side Testing
 
@@ -40,6 +50,8 @@ step 2 : In next new terminal go to server folder (eg: <rootDir>/server/ --> npm
 
 - White Testing There are static_email/Static_password or ... check it and replace it on every check for error free Testing.
 
-```
 
-                                                    <!-- THANK YOU  -->
+
+````
+
+# THANK YOU
