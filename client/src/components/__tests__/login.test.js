@@ -8,7 +8,7 @@ import Login from "../Login";
 import userEvent from "@testing-library/user-event";
 import toast from "react-hot-toast";
 
-const static_email = "pokhrelhari11@gmail.com";
+const static_email = "pokhrelhari1111@gmail.com";
 
 jest.mock("react-hot-toast", () => ({
   ...jest.requireActual("react-hot-toast"),

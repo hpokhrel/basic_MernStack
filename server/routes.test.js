@@ -3,9 +3,9 @@ import request from "supertest";
 // change the static id and email and minPrice to your own value so that the testing works.
 
 const baseUrl = "http://localhost:4321";
-const static_id = "6686b1a7045027f6ce8f346a";
+const static_id = "6686b1e71139229400df2a94";
 const minPrice = 50;
-const static_email = "pokhrelhari1000@gmail.com";
+const static_email = "pokhrelhari100000@gmail.com";
 
 describe("Product API Routes", () => {
   it("should return a list of products", async () => {
